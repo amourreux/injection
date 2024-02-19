@@ -20,4 +20,6 @@ injection project
 - create auth using jwt.
 - create a sample model.
 
+# [github](https://github.com/amourreux/injection)
+# [Emre Portakal](https://emreportakal.com)
 

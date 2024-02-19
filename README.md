@@ -8,6 +8,10 @@ injection project
 
 - api documentation as SWAGGER.
 
+## installation
+
+- docker compose up
+
 ## todo: 
 - create a docker file for mongo image.
 - create a nest project. 

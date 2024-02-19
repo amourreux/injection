@@ -19,6 +19,10 @@ export class UsersSeeder implements Seeder {
       password: hash,
     });
 
+    this.user.insertMany([
+      { email: 'joe@email.com', password: hash, accessHash: '' },
+    ]);
+
     // Insert into the database.
     return this.user.insertMany(users);
   }

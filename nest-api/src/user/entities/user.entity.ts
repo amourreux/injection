@@ -21,6 +21,10 @@ export class User {
     required: false,
   })
   password: string;
+
+  @Factory('')
+  @Prop()
+  accessHash: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

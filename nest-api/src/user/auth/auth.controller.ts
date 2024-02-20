@@ -32,7 +32,7 @@ export class AuthController {
   }
 
   @ApiCookieAuth()
-  @Post('logout/cookie')
+  @Post('logout')
   async logout(@Response() res) {
     res.clearCookie('SESSIONID'); // Clear the session cookie
     return res.send();

@@ -28,15 +28,14 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const authJwtAccessToken = await jwt.sign(
+    const accessToken = await jwt.sign(
       { sub: user._id, email, roles: {} },
       this.configService.get<string>('JWT_SECRET'),
     );
 
-    console.log(authJwtAccessToken);
-    user.accessHash = await bcrypt.hash(authJwtAccessToken, 10);
+    user.accessHash = await bcrypt.hash(accessToken, 10);
     await user.save();
 
-    return { accessToken: authJwtAccessToken } as LoginResponseDto;
+    return { accessToken } as LoginResponseDto;
   }
 }

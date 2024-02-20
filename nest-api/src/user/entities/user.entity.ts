@@ -22,7 +22,7 @@ export class User {
   })
   password: string;
 
-  @Factory('')
+  @Factory(null)
   @Prop()
   accessHash: string;
 }

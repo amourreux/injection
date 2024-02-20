@@ -7,16 +7,21 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
-import { AuthToken } from '../../intefaces/auth-token/auth-token.interface';
+import { IAuthUser } from './interfaces/auth-user.interface';
+import { JWT_SECRET_KEY } from '../../common/constants';
 
 @Injectable()
 export class AuthService {
-  JWT_SECRET_KEY = 'JWT_SECRET';
-
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
     private configService: ConfigService,
   ) {}
+
+  async logout(id: string) {
+    const user = await this.userModel.findById(id).exec();
+    user.accessHash = null;
+    await user.save();
+  }
 
   async login({ email, password }: LoginDto): Promise<LoginResponseDto> {
     const user = await this.userModel.findOne({ email }).select('+password');
@@ -33,7 +38,7 @@ export class AuthService {
 
     const accessToken = await jwt.sign(
       { sub: user._id, email, roles: {} },
-      this.configService.get<string>(this.JWT_SECRET_KEY),
+      this.configService.get<string>(JWT_SECRET_KEY),
     );
 
     user.accessHash = await bcrypt.hash(accessToken, 10);
@@ -42,12 +47,12 @@ export class AuthService {
     return { accessToken } as LoginResponseDto;
   }
 
-  async verifyToken(token: string): Promise<AuthToken> {
+  async verifyToken(token: string): Promise<IAuthUser> {
     try {
       const decoded = jwt.verify(
         token,
-        this.configService.get<string>(this.JWT_SECRET_KEY),
-      ) as AuthToken;
+        this.configService.get<string>(JWT_SECRET_KEY),
+      ) as IAuthUser;
 
       const { email } = decoded;
       const user = await this.userModel.findOne({ email });

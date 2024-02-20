@@ -16,14 +16,6 @@ export class AuthController {
 
   @Post('login')
   @ApiResponse({
-    type: LoginResponseDto,
-  })
-  login(@Body() loginDto: LoginDto): Promise<LoginResponseDto> {
-    return this.authService.login(loginDto);
-  }
-
-  @Post('login/cookie')
-  @ApiResponse({
     status: 201,
     description: 'User authenticated and session cookie set',
     type: LoginResponseDto,

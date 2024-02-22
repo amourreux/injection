@@ -5,7 +5,6 @@ import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { ErrorResponseDto } from '../../common/dto/error-response.dto';
 import { AuthUser } from './decorators/auth-user.decorator';
-import { SESSIONID } from '../../common/constants';
 import { IAuthUser } from './interfaces/auth-user.interface';
 import { AuthBearerGuard } from '../../guards/auth-cookie/auth-bearer.guard';
 
@@ -35,7 +34,6 @@ export class AuthController {
   @Post('logout')
   async logout(@Response() res, @AuthUser() authUser: IAuthUser) {
     this.authService.logout(authUser.sub);
-    res.clearCookie(SESSIONID); // Clear the session cookie
     return res.send();
   }
 }
